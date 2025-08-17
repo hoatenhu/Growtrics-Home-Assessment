@@ -1,0 +1,166 @@
+[project]
+name = "growtrics-homework-solver"
+version = "1.0.0"
+description = "A FastAPI + Firebase backend service that uses AI to solve student mathematics homework problems from uploaded images or PDFs"
+authors = [
+    {name = "Growtrics Team", email = "team@growtrics.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+keywords = ["mathematics", "homework", "ai", "ocr", "education", "fastapi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Framework :: FastAPI",
+]
+
+dependencies = [
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0",
+    "python-multipart>=0.0.6",
+    "firebase-admin>=6.2.0",
+    "Pillow>=10.1.0",
+    "pytesseract>=0.3.10",
+    "opencv-python>=4.8.1.78",
+    "numpy>=1.25.2",
+    "openai>=1.3.7",
+    "google-generativeai>=0.3.2",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.5.0",
+    "aiofiles>=23.2.1",
+    "pdf2image>=1.16.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.24.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+test = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "httpx>=0.24.0",
+    "requests>=2.31.0",
+]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
+    "mkdocstrings[python]>=0.22.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/growtrics/homework-solver"
+Documentation = "https://github.com/growtrics/homework-solver#readme"
+Repository = "https://github.com/growtrics/homework-solver.git"
+Issues = "https://github.com/growtrics/homework-solver/issues"
+
+[project.scripts]
+homework-solver = "main:app"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.24.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+    "pytest-cov>=4.0.0",
+    "requests>=2.31.0",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+# A regex preceded by ^/ will apply only to files and directories
+# in the root of the project.
+^/docs/  # exclude a file named foo.py in the root of the project (also the root of the repository)
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["services", "models", "utils"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "firebase_admin.*",
+    "google.*",
+    "pytesseract.*",
+    "cv2.*",
+    "pdf2image.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = [
+    "tests",
+]
+asyncio_mode = "auto"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
