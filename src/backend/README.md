@@ -5,7 +5,8 @@ A FastAPI + Firebase backend service that uses AI to solve student mathematics h
 ## Features
 
 - 📸 **Image/PDF Upload**: Upload homework problems as images (PNG, JPG, JPEG) or PDF files
-- 🔍 **AI Vision Processing**: Direct image analysis using Gemini Vision for superior accuracy with complex diagrams and formulas (bypasses traditional OCR)
+- 🔍 **AI Vision Processing**: Direct image and PDF analysis using Gemini Vision for superior accuracy with complex diagrams and formulas (bypasses traditional OCR)
+- 📄 **Multi-format Support**: Handles both single images (PNG, JPG, JPEG) and multi-page PDF documents
 - 🤖 **Multi-AI Provider Support**: Choose between OpenAI GPT-4, Google Gemini, or mock providers
 - 🔄 **Easy Provider Switching**: Switch between AI providers with simple configuration
 - 📊 **Multiple Problem Types**: Supports multiple choice, word problems, calculations, geometry, and algebra
@@ -230,7 +231,9 @@ Body: file (image or PDF)
 POST /solve/{problem_id}
 ```
 
-**Description:** Uses AI Vision to directly analyze uploaded images and solve mathematical problems. This bypasses traditional OCR for superior accuracy with complex diagrams, formulas, and geometric figures.
+**Description:** Uses AI Vision to directly analyze uploaded images and PDF files to solve mathematical problems. This bypasses traditional OCR for superior accuracy with complex diagrams, formulas, and geometric figures.
+
+**PDF Processing:** Multi-page PDFs are automatically converted to images and processed page by page, with results combined into a comprehensive solution.
 
 **Response:**
 ```json
