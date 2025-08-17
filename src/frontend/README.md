@@ -27,12 +27,32 @@ A beautiful, modern Flutter application that allows students to upload their mat
 
 ## Screenshots
 
-The app includes several key screens:
+The app includes several key screens showcasing the complete homework solving workflow:
 
-1. **Upload Screen**: Clean interface with camera, gallery, and file picker options
-2. **Solving Screen**: Animated progress indicator while AI processes the problem
-3. **Solution Screen**: Detailed display of answers with expandable explanations
-4. **History Screen**: List of previous problems with status indicators
+### 1. Home Screen
+<img src="screenshots/screenshot_1.png" alt="Home Screen" width="300"/>
+
+*Main navigation hub with upload options and problem history*
+
+### 2. Upload Screen
+<img src="screenshots/screenshot_2.png" alt="Upload Screen" width="300"/>
+
+*Clean interface with camera, gallery, and file picker options*
+
+### 3. File Preview Screen
+<img src="screenshots/screenshot_3.png" alt="File Preview Screen" width="300"/>
+
+*Preview selected image/PDF with Solve button for user confirmation*
+
+### 4. Solving Screen
+<img src="screenshots/screenshot_4.png" alt="Solving Screen" width="300"/>
+
+*Animated progress indicator while AI processes the problem*
+
+### 5. Solution Screen
+<img src="screenshots/screenshot_5.png" alt="Solution Screen" width="300"/>
+
+*Detailed display of answers with expandable explanations and step-by-step solutions*
 
 ## Installation & Setup
 
