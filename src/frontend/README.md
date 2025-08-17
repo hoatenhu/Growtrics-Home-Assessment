@@ -34,22 +34,22 @@ The app includes several key screens showcasing the complete homework solving wo
 
 *Main navigation hub with upload options and problem history*
 
-### 2. Upload Screen
+### 2. Preview Screen
 <img src="screenshots/screenshot_2.png" alt="Upload Screen" width="300"/>
 
 *Clean interface with camera, gallery, and file picker options*
 
-### 3. File Preview Screen
+### 3. Solving Screen
 <img src="screenshots/screenshot_3.png" alt="File Preview Screen" width="300"/>
 
 *Preview selected image/PDF with Solve button for user confirmation*
 
-### 4. Solving Screen
+### 4. Solution Screen
 <img src="screenshots/screenshot_4.png" alt="Solving Screen" width="300"/>
 
 *Animated progress indicator while AI processes the problem*
 
-### 5. Solution Screen
+### 5. History Screen
 <img src="screenshots/screenshot_5.png" alt="Solution Screen" width="300"/>
 
 *Detailed display of answers with expandable explanations and step-by-step solutions*
