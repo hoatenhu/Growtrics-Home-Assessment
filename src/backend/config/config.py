@@ -6,8 +6,8 @@ load_dotenv()
 
 class Settings:
     # AI Provider Configuration
-    AI_PROVIDER = os.getenv("AI_PROVIDER", "auto")  # "openai", "gemini", "mock", or "auto"
-    AI_MODEL = os.getenv("AI_MODEL")  # Specific model to use (optional)
+    AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # Default: "gemini" (120x cheaper than OpenAI)
+    AI_MODEL = os.getenv("AI_MODEL", "gemini-pro")  # Default model for Gemini
     
     # OpenAI Configuration
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")

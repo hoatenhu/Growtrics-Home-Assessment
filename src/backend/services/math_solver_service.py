@@ -7,6 +7,7 @@ import time
 from models.homework_models import ExtractedContent, Solution, Question, ProblemType
 from services.ai_providers.provider_factory import AIProviderFactory
 from services.ai_providers.base_provider import AIProvider
+from config.config import settings
 
 class MathSolverService:
     def __init__(self, 
@@ -21,19 +22,19 @@ class MathSolverService:
             model: Specific model to use
             api_key: API key for the provider
         """
-        # Get provider from environment or use auto-detection
+        # Use centralized configuration with Gemini as default
         if not provider_name:
-            provider_name = os.getenv("AI_PROVIDER", "auto")
+            provider_name = settings.AI_PROVIDER
         
         if not model:
-            model = os.getenv("AI_MODEL")
+            model = settings.AI_MODEL
         
         if not api_key:
             # Try to get API key for the specific provider
             if provider_name == "openai":
-                api_key = os.getenv("OPENAI_API_KEY")
+                api_key = settings.OPENAI_API_KEY
             elif provider_name == "gemini":
-                api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+                api_key = settings.GEMINI_API_KEY
         
         # Create the AI provider
         self.provider = AIProviderFactory.get_provider(

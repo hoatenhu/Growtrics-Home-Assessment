@@ -69,7 +69,7 @@ class AIProviderFactory:
     def _auto_detect_provider(cls) -> str:
         """Auto-detect which provider to use based on available API keys"""
         
-        # Check for API keys in order of preference
+        # Check for API keys in order of preference (Gemini first - 120x cheaper!)
         if os.getenv("GEMINI_API_KEY"):
             return "gemini"
         elif os.getenv("GOOGLE_API_KEY"):  # Alternative env var name
@@ -77,8 +77,8 @@ class AIProviderFactory:
         elif os.getenv("OPENAI_API_KEY"):
             return "openai"
         else:
-            # No API keys found, use mock provider
-            return "mock"
+            # No API keys found, default to Gemini (will use mock if no key)
+            return "gemini"
     
     @classmethod
     def _get_api_key_for_provider(cls, provider_name: str) -> Optional[str]:
