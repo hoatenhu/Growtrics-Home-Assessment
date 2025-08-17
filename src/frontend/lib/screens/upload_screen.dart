@@ -58,7 +58,7 @@ class _UploadScreenState extends State<UploadScreen> {
             color: AppTheme.primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(60),
           ),
-          child: const Icon(
+          child: Icon(
             MdiIcons.calculator,
             size: 60,
             color: AppTheme.primaryColor,
@@ -98,7 +98,7 @@ class _UploadScreenState extends State<UploadScreen> {
         ),
         const SizedBox(height: AppConstants.defaultPadding),
         _buildOptionCard(
-          icon: MdiIcons.filePdf,
+          icon: MdiIcons.filePdfBox,
           title: AppStrings.pickFile,
           subtitle: 'Choose PDF or image file',
           onTap: _pickFile,

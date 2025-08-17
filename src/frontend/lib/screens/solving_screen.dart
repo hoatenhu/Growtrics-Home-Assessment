@@ -107,7 +107,7 @@ class _SolvingScreenState extends State<SolvingScreen>
               ),
               child: Icon(
                 Helpers.isPdfFile(widget.filename)
-                    ? MdiIcons.filePdf
+                    ? MdiIcons.filePdfBox
                     : MdiIcons.fileImage,
                 color: AppTheme.primaryColor,
               ),
@@ -157,7 +157,7 @@ class _SolvingScreenState extends State<SolvingScreen>
               builder: (context, child) {
                 return Transform.rotate(
                   angle: _rotationController.value * 2 * 3.14159,
-                  child: const Icon(
+                  child: Icon(
                     MdiIcons.brain,
                     size: 60,
                     color: AppTheme.primaryColor,

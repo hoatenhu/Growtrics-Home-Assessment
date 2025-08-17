@@ -41,7 +41,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(MdiIcons.refresh),
+            icon: Icon(MdiIcons.refresh),
             onPressed: _refreshProblems,
           ),
         ],
@@ -111,7 +111,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             const SizedBox(height: AppConstants.largePadding),
             ElevatedButton.icon(
               onPressed: _refreshProblems,
-              icon: const Icon(MdiIcons.refresh),
+              icon: Icon(MdiIcons.refresh),
               label: const Text(AppStrings.retry),
             ),
           ],
@@ -134,7 +134,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 color: AppTheme.primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(60),
               ),
-              child: const Icon(
+              child: Icon(
                 MdiIcons.bookOpenPageVariant,
                 size: 60,
                 color: AppTheme.primaryColor,
@@ -157,7 +157,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             const SizedBox(height: AppConstants.largePadding),
             ElevatedButton.icon(
               onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(MdiIcons.plus),
+              icon: Icon(MdiIcons.plus),
               label: const Text('Upload Homework'),
             ),
           ],

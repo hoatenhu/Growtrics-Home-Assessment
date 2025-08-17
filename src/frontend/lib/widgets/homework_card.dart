@@ -80,7 +80,7 @@ class HomeworkCard extends StatelessWidget {
       icon = MdiIcons.fileImage;
       color = AppTheme.primaryColor;
     } else if (Helpers.isPdfFile(problem.filename)) {
-      icon = MdiIcons.filePdf;
+      icon = MdiIcons.filePdfBox;
       color = AppTheme.errorColor;
     } else {
       icon = MdiIcons.file;

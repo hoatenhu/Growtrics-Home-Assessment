@@ -32,7 +32,7 @@ class _SolutionScreenState extends State<SolutionScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(MdiIcons.shareVariant),
+            icon: Icon(MdiIcons.shareVariant),
             onPressed: _shareSolution,
           ),
         ],
@@ -73,7 +73,7 @@ class _SolutionScreenState extends State<SolutionScreen> {
                     color: AppTheme.successColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(24),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     MdiIcons.checkCircle,
                     color: AppTheme.successColor,
                     size: 24,
@@ -318,7 +318,7 @@ class _SolutionScreenState extends State<SolutionScreen> {
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
-            icon: const Icon(MdiIcons.plus),
+            icon: Icon(MdiIcons.plus),
             label: const Text('Solve Another Problem'),
           ),
         ),
@@ -327,7 +327,7 @@ class _SolutionScreenState extends State<SolutionScreen> {
           width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: _copySolutionToClipboard,
-            icon: const Icon(MdiIcons.contentCopy),
+            icon: Icon(MdiIcons.contentCopy),
             label: const Text('Copy Solution'),
           ),
         ),
