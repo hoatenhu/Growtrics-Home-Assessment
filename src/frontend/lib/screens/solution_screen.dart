@@ -7,6 +7,7 @@ import '../utils/constants.dart';
 import '../utils/helpers.dart';
 import '../widgets/question_card.dart';
 import '../widgets/expandable_card.dart';
+import 'home_screen.dart';
 
 class SolutionScreen extends StatefulWidget {
   final String problemId;
@@ -30,6 +31,10 @@ class _SolutionScreenState extends State<SolutionScreen> {
       appBar: AppBar(
         title: const Text(AppStrings.solution),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(MdiIcons.home),
+          onPressed: _navigateToHome,
+        ),
         actions: [
           IconButton(
             icon: Icon(MdiIcons.shareVariant),
@@ -315,11 +320,14 @@ class _SolutionScreenState extends State<SolutionScreen> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
-            onPressed: () {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
+            onPressed: _navigateToHome,
             icon: Icon(MdiIcons.plus),
             label: const Text('Solve Another Problem'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryColor,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+            ),
           ),
         ),
         const SizedBox(height: AppConstants.defaultPadding),
@@ -398,6 +406,14 @@ class _SolutionScreenState extends State<SolutionScreen> {
         content: Text('Solution copied to clipboard!'),
         backgroundColor: AppTheme.successColor,
       ),
+    );
+  }
+
+  void _navigateToHome() {
+    // Clear the entire navigation stack and go to home screen
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
+      (route) => false,
     );
   }
 }

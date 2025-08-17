@@ -4,7 +4,7 @@ import 'package:http_parser/http_parser.dart';
 import '../models/homework_models.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:8000'; // Change this to your backend URL
+  static const String baseUrl = 'http://172.16.3.136:8000'; // Change this to your backend URL
   late final Dio _dio;
 
   ApiService() {
