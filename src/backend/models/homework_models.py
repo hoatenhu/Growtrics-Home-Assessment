@@ -37,7 +37,7 @@ class Solution(BaseModel):
 class HomeworkProblem(BaseModel):
     id: str
     filename: str
-    file_url: str
+    file_path: str  # Local file path instead of URL
     upload_timestamp: datetime
     extracted_content: Optional[ExtractedContent] = None
     solution: Optional[Solution] = None

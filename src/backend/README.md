@@ -5,11 +5,12 @@ A FastAPI + Firebase backend service that uses AI to solve student mathematics h
 ## Features
 
 - 📸 **Image/PDF Upload**: Upload homework problems as images (PNG, JPG, JPEG) or PDF files
-- 🔍 **OCR Text Extraction**: Extract text and mathematical content from images using Tesseract OCR
+- 🔍 **AI Vision Processing**: Direct image analysis using Gemini Vision for superior accuracy with complex diagrams and formulas (bypasses traditional OCR)
 - 🤖 **Multi-AI Provider Support**: Choose between OpenAI GPT-4, Google Gemini, or mock providers
 - 🔄 **Easy Provider Switching**: Switch between AI providers with simple configuration
 - 📊 **Multiple Problem Types**: Supports multiple choice, word problems, calculations, geometry, and algebra
-- ☁️ **Firebase Integration**: Store files and homework data in Firebase
+- 🗄️ **Firebase Firestore**: Store homework data and solutions in Firestore
+- 📁 **Local File Storage**: Store uploaded files securely in application directory
 - 📝 **Detailed Solutions**: Get step-by-step solutions with explanations
 - 💰 **Cost Optimization**: Use Gemini for 120x cheaper AI processing than OpenAI
 
@@ -20,7 +21,7 @@ A FastAPI + Firebase backend service that uses AI to solve student mathematics h
 ├── models/
 │   └── homework_models.py      # Pydantic models for data structures
 ├── services/
-│   ├── firebase_service.py     # Firebase Storage and Firestore integration
+│   ├── firebase_service.py     # Firebase Firestore integration & local file storage  
 │   ├── ocr_service.py         # OCR text extraction from images/PDFs
 │   └── math_solver_service.py  # AI-powered math problem solving
 ├── utils/
@@ -81,12 +82,18 @@ sudo apt-get install poppler-utils
 Create a `.env` file in the backend directory:
 
 ```env
-# OpenAI Configuration
-OPENAI_API_KEY=your_openai_api_key_here
+# AI Provider Configuration (Choose one)
+AI_PROVIDER=gemini
+GEMINI_API_KEY=your_gemini_api_key_here
+# OR
+# AI_PROVIDER=openai
+# OPENAI_API_KEY=your_openai_api_key_here
 
 # Firebase Configuration (optional for development)
 FIREBASE_SERVICE_ACCOUNT_PATH=path/to/firebase-service-account.json
-FIREBASE_STORAGE_BUCKET=your-firebase-project.appspot.com
+
+# Local File Storage (optional)
+UPLOADS_DIR=uploads
 
 # Application Configuration
 DEBUG=True
@@ -96,12 +103,28 @@ HOST=0.0.0.0
 
 ### 4. Firebase Setup (Optional)
 
-For production deployment:
+The application uses **Firestore Database only** (no Firebase Storage needed).
 
-1. Create a Firebase project at https://console.firebase.google.com
-2. Enable Firestore Database and Storage
-3. Generate a service account key
-4. Download the JSON key file and set `FIREBASE_SERVICE_ACCOUNT_PATH`
+**For production deployment:**
+
+1. **Create Firebase Project**
+   - Go to https://console.firebase.google.com
+   - Click "Create a project"
+   - Enter project name (e.g., `growtrics-homework-solver`)
+
+2. **Enable Firestore Database**
+   - Go to "Firestore Database" in Firebase Console
+   - Click "Create database"
+   - Choose "Production mode" for security
+   - Select your preferred location
+
+3. **Create Service Account** (Optional)
+   - Go to Project Settings → Service accounts
+   - Click "Generate new private key"
+   - Download the JSON file
+   - Set `FIREBASE_SERVICE_ACCOUNT_PATH` in your `.env`
+
+**File Storage**: Files are stored **locally** in the `uploads/` directory (created automatically).
 
 **Note**: The application includes mock implementations for development, so Firebase setup is optional for testing.
 
@@ -204,8 +227,10 @@ Body: file (image or PDF)
 
 ### 2. Solve Homework
 ```http
-POST /solve-homework/{problem_id}
+POST /solve/{problem_id}
 ```
+
+**Description:** Uses AI Vision to directly analyze uploaded images and solve mathematical problems. This bypasses traditional OCR for superior accuracy with complex diagrams, formulas, and geometric figures.
 
 **Response:**
 ```json

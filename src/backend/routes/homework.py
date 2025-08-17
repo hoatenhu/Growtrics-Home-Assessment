@@ -43,11 +43,11 @@ async def upload_homework(file: UploadFile = File(...)):
         # Save file temporarily
         temp_file_path = await file_utils.save_temp_file(file)
         
-        # Upload to Firebase Storage
-        firebase_url = await firebase_service.upload_file(temp_file_path, file.filename)
+        # Save file to local storage
+        permanent_file_path = await firebase_service.save_file(temp_file_path, file.filename)
         
         # Create homework problem record
-        problem_id = await firebase_service.create_homework_problem(firebase_url, file.filename)
+        problem_id = await firebase_service.create_homework_problem(permanent_file_path, file.filename)
         
         # Clean up temp file
         file_utils.cleanup_temp_file(temp_file_path)
@@ -72,11 +72,10 @@ async def solve_homework(problem_id: str):
     """
     Solve the homework problem identified by problem_id
     
-    Downloads the homework file, extracts mathematical content using OCR,
-    and solves the problems using AI. Returns detailed solutions with explanations.
+    Uses AI Vision to directly analyze the image and extract + solve mathematical problems,
+    bypassing traditional OCR for better accuracy with complex diagrams and formulas.
     """
     firebase_service = get_firebase_service()
-    ocr_service = get_ocr_service()
     math_solver_service = get_math_solver_service()
     file_utils = get_file_utils()
     
@@ -86,14 +85,14 @@ async def solve_homework(problem_id: str):
         if not homework_problem:
             raise HTTPException(status_code=404, detail="Homework problem not found")
         
-        # Download file from Firebase Storage
-        local_file_path = await firebase_service.download_file(homework_problem.file_url)
+        # Get local file path (file is already stored locally)
+        local_file_path = await firebase_service.get_file_path(homework_problem.file_path)
         
-        # Extract text and mathematical content using OCR
-        extracted_content = await ocr_service.extract_content(local_file_path)
+        print(f"🔍 Processing homework image: {homework_problem.filename}")
+        print(f"📁 Local file path: {local_file_path}")
         
-        # Solve the mathematical problems using AI
-        solution = await math_solver_service.solve_problems(extracted_content)
+        # Solve problems directly from image using AI Vision (bypasses OCR)
+        solution = await math_solver_service.solve_problems_from_image(local_file_path)
         
         # Set the problem ID in the solution
         solution.problem_id = problem_id
@@ -101,8 +100,12 @@ async def solve_homework(problem_id: str):
         # Update the homework problem with the solution
         await firebase_service.update_homework_solution(problem_id, solution)
         
-        # Clean up downloaded file
-        file_utils.cleanup_temp_file(local_file_path)
+        print(f"✅ Successfully solved {solution.total_questions} questions in {solution.processing_time_seconds:.2f}s")
+        
+        # Note: We don't clean up the permanent file since it's stored locally
+        # Only clean up if it's a temp/mock file
+        if local_file_path.startswith("/tmp/"):
+            file_utils.cleanup_temp_file(local_file_path)
         
         return solution
         

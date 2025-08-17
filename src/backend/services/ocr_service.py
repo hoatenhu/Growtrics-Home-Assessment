@@ -14,12 +14,77 @@ from models.homework_models import ExtractedContent, Question, ProblemType
 class OCRService:
     def __init__(self):
         self.executor = ThreadPoolExecutor(max_workers=2)
-        # Configure tesseract path if needed (especially on Windows)
-        # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+        self.tesseract_available = self._check_tesseract_installation()
+        
+        # Configure tesseract path if needed
+        self._configure_tesseract_path()
+    
+    def _check_tesseract_installation(self) -> bool:
+        """Check if Tesseract is installed and accessible"""
+        try:
+            import subprocess
+            result = subprocess.run(['tesseract', '--version'], 
+                                  capture_output=True, text=True, timeout=5)
+            if result.returncode == 0:
+                print(f"✅ Tesseract OCR found: {result.stdout.split()[1] if len(result.stdout.split()) > 1 else 'Unknown version'}")
+                return True
+            else:
+                print("⚠️  Tesseract OCR not found in PATH")
+                return False
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError, FileNotFoundError):
+            print("⚠️  Tesseract OCR not installed or not accessible")
+            return False
+    
+    def _configure_tesseract_path(self):
+        """Configure tesseract path for different operating systems"""
+        import platform
+        import shutil
+        
+        # Try to find tesseract automatically
+        tesseract_path = shutil.which('tesseract')
+        
+        if tesseract_path:
+            pytesseract.pytesseract.tesseract_cmd = tesseract_path
+            print(f"✅ Tesseract configured: {tesseract_path}")
+        else:
+            # Try common installation paths
+            common_paths = []
+            
+            if platform.system() == "Darwin":  # macOS
+                common_paths = [
+                    '/usr/local/bin/tesseract',
+                    '/opt/homebrew/bin/tesseract',
+                    '/usr/bin/tesseract'
+                ]
+            elif platform.system() == "Windows":
+                common_paths = [
+                    r'C:\Program Files\Tesseract-OCR\tesseract.exe',
+                    r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
+                ]
+            elif platform.system() == "Linux":
+                common_paths = [
+                    '/usr/bin/tesseract',
+                    '/usr/local/bin/tesseract'
+                ]
+            
+            for path in common_paths:
+                if os.path.exists(path):
+                    pytesseract.pytesseract.tesseract_cmd = path
+                    print(f"✅ Tesseract found at: {path}")
+                    self.tesseract_available = True
+                    return
+            
+            print("❌ Tesseract not found. OCR will use mock data.")
     
     async def extract_content(self, file_path: str) -> ExtractedContent:
         """Extract text and mathematical content from image or PDF"""
         try:
+            # Check if Tesseract is available
+            if not self.tesseract_available:
+                print("⚠️  Tesseract not available, using mock content")
+                print("💡 To install Tesseract: brew install tesseract")
+                return self._create_mock_content()
+            
             if file_path.endswith('.pdf'):
                 return await self._extract_from_pdf(file_path)
             else:
@@ -27,6 +92,7 @@ class OCRService:
                 
         except Exception as e:
             print(f"Error in OCR extraction: {e}")
+            print("⚠️  Falling back to mock content")
             # Return mock content for development
             return self._create_mock_content()
     

@@ -75,6 +75,61 @@ class MathSolverService:
             # Create a basic fallback solution
             return self._create_fallback_solution(extracted_content, start_time)
     
+    async def solve_problems_from_image(self, image_path: str) -> Solution:
+        """Solve mathematical problems directly from image using AI vision (bypasses OCR)"""
+        start_time = time.time()
+        
+        try:
+            print(f"🔍 Analyzing image directly with {self.provider.provider_name}...")
+            
+            # Check if provider supports image processing
+            if hasattr(self.provider, 'solve_homework_from_image'):
+                solved_questions = await self.provider.solve_homework_from_image(image_path)
+                
+                # Generate overall explanation
+                overall_explanation = await self.provider.generate_overall_explanation(solved_questions)
+                
+                processing_time = time.time() - start_time
+                print(f"✅ Solved {len(solved_questions)} questions in {processing_time:.2f}s using AI Vision")
+                
+                return Solution(
+                    problem_id="",  # This will be set by the caller
+                    questions_solved=solved_questions,
+                    overall_explanation=overall_explanation,
+                    total_questions=len(solved_questions),
+                    solved_at=datetime.now(),
+                    processing_time_seconds=processing_time
+                )
+            else:
+                # Fallback: Provider doesn't support image processing
+                print(f"⚠️  {self.provider.provider_name} doesn't support direct image processing")
+                print("📝 Falling back to OCR-based approach...")
+                
+                # Create mock extracted content and use regular solving
+                from services.ocr_service import OCRService
+                ocr_service = OCRService()
+                extracted_content = await ocr_service.extract_content(image_path)
+                return await self.solve_problems(extracted_content)
+                
+        except Exception as e:
+            print(f"❌ Error solving problems from image: {e}")
+            # Create a fallback solution
+            processing_time = time.time() - start_time
+            return Solution(
+                problem_id="",
+                questions_solved=[Question(
+                    question_number=1,
+                    question_text="Error processing image",
+                    problem_type=ProblemType.OTHER,
+                    explanation=f"Unable to process image: {str(e)}",
+                    steps=["Please check the image format and try again"]
+                )],
+                overall_explanation=f"Unable to process homework image due to error: {str(e)}",
+                total_questions=1,
+                solved_at=datetime.now(),
+                processing_time_seconds=processing_time
+            )
+    
     def get_provider_info(self) -> Dict[str, Any]:
         """Get information about the current AI provider"""
         return {

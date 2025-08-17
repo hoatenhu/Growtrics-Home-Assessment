@@ -7,7 +7,7 @@ load_dotenv()
 class Settings:
     # AI Provider Configuration
     AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # Default: "gemini" (120x cheaper than OpenAI)
-    AI_MODEL = os.getenv("AI_MODEL", "gemini-pro")  # Default model for Gemini
+    AI_MODEL = os.getenv("AI_MODEL", "gemini-1.5-flash")  # Default: gemini-1.5-flash (faster & supports vision)
     
     # OpenAI Configuration
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -15,9 +15,11 @@ class Settings:
     # Google Gemini Configuration
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
     
-    # Firebase Configuration
+    # Firebase Configuration (Firestore only)
     FIREBASE_SERVICE_ACCOUNT_PATH = os.getenv("FIREBASE_SERVICE_ACCOUNT_PATH")
-    FIREBASE_STORAGE_BUCKET = os.getenv("FIREBASE_STORAGE_BUCKET", "growtrics-homework-solver.appspot.com")
+    
+    # Local File Storage Configuration
+    UPLOADS_DIR = os.getenv("UPLOADS_DIR", "uploads")
     
     # Application Configuration
     DEBUG = os.getenv("DEBUG", "True").lower() == "true"
